@@ -9,12 +9,12 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity(), MessageListener {
     companion object {
+        private const val TAG = "MainActivity"
         private const val RECEIVE_SMS_PERMISSION_CODE = 0
         private const val SEND_SMS_PERMISSION_CODE = 2
     }
@@ -28,7 +28,6 @@ class MainActivity : AppCompatActivity(), MessageListener {
 
         // Request SMS Permissions from user
         requestReceiveSmsPermission()
-        //    requestSendSMSPermission()
 
         //Register SMS Listener
         MessageReceiver.bindListener(this)
@@ -37,6 +36,8 @@ class MainActivity : AppCompatActivity(), MessageListener {
         switchToggleSendSMSMessages.setOnCheckedChangeListener { buttonView, isChecked ->
             run {
                 userDisabledSMSSending = !isChecked
+                Log.i(TAG, "userDisabledSMSSending: " + userDisabledSMSSending)
+
             }
         }
     }
@@ -44,16 +45,22 @@ class MainActivity : AppCompatActivity(), MessageListener {
     // Message received handler
     override fun messageReceived(message: String) {
         textViewLastMessageReceivedDisplay.text = message
+        Log.i(TAG, "message: " + message)
 
         // Send SMS if user hasn't disabled it
         if (!userDisabledSMSSending) {
+            Log.i(TAG, "userDisabledSMSSending: " + userDisabledSMSSending)
+
             val message = editTextSetCustomMessage.text.toString()
+            val phoneNumber = editTextPhoneNumber.text.toString()
+
+            Log.i(TAG, "message: " + message)
+
             textViewLastMessageSentDisplay.text = message
+
             val sMSMessageSender = SMSMessageSender()
-            sMSMessageSender.sendSMSMessage(
-                editTextPhoneNumber.text.toString(),
-                message
-            )
+            sMSMessageSender.sendSMSMessage(phoneNumber, message)
+            Log.i(TAG, "sMSMessageSender: " + sMSMessageSender)
         }
     }
 
@@ -61,39 +68,22 @@ class MainActivity : AppCompatActivity(), MessageListener {
     private fun requestReceiveSmsPermission() {
         val permission = Manifest.permission.RECEIVE_SMS
         val grant = ContextCompat.checkSelfPermission(this, permission)
-        Log.e("Error", permission + grant)
+        Log.i(TAG, permission + grant)
+
         val permission1 = Manifest.permission.RECEIVE_SMS
         val grant1 = ContextCompat.checkSelfPermission(this, permission1)
-        Log.e("Error", permission1 + grant1)
+        Log.i(TAG, permission1 + grant1)
 
         if (grant != PackageManager.PERMISSION_GRANTED) {
-            Log.e("Error", "!granted")
+            Log.i(TAG, "!granted")
 
             val permissionList = arrayOfNulls<String>(2)
             permissionList[0] = Manifest.permission.RECEIVE_SMS
             permissionList[1] = Manifest.permission.SEND_SMS
             ActivityCompat.requestPermissions(this, permissionList, RECEIVE_SMS_PERMISSION_CODE)
-            Log.e("Error", permissionList.toString())
+            Log.i(TAG, permissionList.toString())
         }
-
-        val permission3 = Manifest.permission.RECEIVE_SMS
-        val grant3 = ContextCompat.checkSelfPermission(this, permission3)
-        Log.e("Error", permission3 + grant3)
-        val permission4 = Manifest.permission.RECEIVE_SMS
-        val grant4 = ContextCompat.checkSelfPermission(this, permission4)
-        Log.e("Error", permission4 + grant4)
     }
-
-    // Request send SMS permission
-//    private fun requestSendSMSPermission() {
-//        val permission = Manifest.permission.SEND_SMS
-//        val grant = ContextCompat.checkSelfPermission(this, permission)
-//        if (grant != PackageManager.PERMISSION_GRANTED) {
-//            val permissionList = arrayOfNulls<String>(1)
-//            permissionList[0] = permission
-//            ActivityCompat.requestPermissions(this, permissionList, SEND_SMS_PERMISSION_CODE)
-//        }
-//    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -102,28 +92,18 @@ class MainActivity : AppCompatActivity(), MessageListener {
         when (requestCode) {
             RECEIVE_SMS_PERMISSION_CODE -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "Results - Receive+" + grantResults[0], Toast.LENGTH_LONG).show();
-                    Log.e("Error", "Results - Receive+" + grantResults[0])
-
+                    Log.i(TAG, "Granted SMS_Receive Permission" + grantResults[0])
                 } else {
-                    Toast.makeText(this, "Results - Receive-" + grantResults[0], Toast.LENGTH_LONG).show();
-                    Log.e("Error", "Results - Receive-" + grantResults[0])
-
+                    Log.i(TAG, "Denied SMS_Receive Permission" + grantResults[0])
                 }
                 return
             }
 
             SEND_SMS_PERMISSION_CODE -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "Results - Send+" + grantResults[0] + grantResults[2], Toast.LENGTH_LONG)
-                        .show()
-                    Log.e("Error", "Results - Send+" + grantResults[0] + grantResults[2])
-
+                if (grantResults.isNotEmpty() && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
+                    Log.i(TAG, "Granted SMS_Send Permission" + grantResults[2])
                 } else {
-                    Toast.makeText(this, "Results - Send-" + grantResults[0] + grantResults[2], Toast.LENGTH_LONG)
-                        .show()
-                    Log.e("Error", "Results - Send-" + grantResults[0] + grantResults[2])
-
+                    Log.i(TAG, "Denied SMS_Send Permission" + grantResults[2])
                 }
                 return
             }
