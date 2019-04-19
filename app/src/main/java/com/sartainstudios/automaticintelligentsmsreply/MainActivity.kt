@@ -1,23 +1,95 @@
 package com.sartainstudios.automaticintelligentsmsreply
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
+import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+    companion object {
+        private const val RECEIVE_SMS_PERMISSION_CODE = 0
+        private const val READ_SMS_PERMISSION_CODE = 1
+        private const val SEND_SMS_PERMISSION_CODE = 2
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+        requestReceiveSmsPermission()
+        requestReadSMSPermission()
+        requestSendSMSPermission()
+    }
+
+    private fun requestReceiveSmsPermission() {
+        val permission = Manifest.permission.RECEIVE_SMS
+        val grant = ContextCompat.checkSelfPermission(this, permission)
+        if (grant != PackageManager.PERMISSION_GRANTED) {
+            val permission_list = arrayOfNulls<String>(1)
+            permission_list[0] = permission
+            ActivityCompat.requestPermissions(this, permission_list, RECEIVE_SMS_PERMISSION_CODE)
+        }
+    }
+
+    private fun requestReadSMSPermission() {
+        val permission = Manifest.permission.READ_SMS
+        val grant = ContextCompat.checkSelfPermission(this, permission)
+        if (grant != PackageManager.PERMISSION_GRANTED) {
+            val permission_list = arrayOfNulls<String>(1)
+            permission_list[0] = permission
+            ActivityCompat.requestPermissions(this, permission_list, READ_SMS_PERMISSION_CODE)
+        }
+    }
+
+    private fun requestSendSMSPermission() {
+        val permission = Manifest.permission.SEND_SMS
+        val grant = ContextCompat.checkSelfPermission(this, permission)
+        if (grant != PackageManager.PERMISSION_GRANTED) {
+            val permission_list = arrayOfNulls<String>(1)
+            permission_list[0] = permission
+            ActivityCompat.requestPermissions(this, permission_list, SEND_SMS_PERMISSION_CODE)
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>, grantResults: IntArray
+    ) {
+        when (requestCode) {
+            RECEIVE_SMS_PERMISSION_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "Results - Receive" + grantResults[0], Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(this, "Results - Receive" + grantResults[0], Toast.LENGTH_LONG).show();
+                }
+                return
+            }
+
+            READ_SMS_PERMISSION_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "Results - Read" + grantResults[0]+ grantResults[1], Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(this, "Results - Read" + grantResults[0]+ grantResults[1], Toast.LENGTH_LONG).show();
+                }
+                return
+            }
+
+            SEND_SMS_PERMISSION_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "Results - Send" + grantResults[0]+ grantResults[2], Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(this, "Results - Send" + grantResults[0]+ grantResults[2], Toast.LENGTH_LONG).show();
+                }
+                return
+            }
         }
     }
 
