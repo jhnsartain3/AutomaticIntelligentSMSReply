@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity(), MessageListener {
     companion object {
@@ -17,6 +18,8 @@ class MainActivity : AppCompatActivity(), MessageListener {
         private const val READ_SMS_PERMISSION_CODE = 1
         private const val SEND_SMS_PERMISSION_CODE = 2
     }
+
+    private var userDisabledSMSSending = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,12 +32,24 @@ class MainActivity : AppCompatActivity(), MessageListener {
 
         //Register sms listener
         MessageReceiver.bindListener(this)
-        val sMSMessageSender = SMSMessageSender()
-        sMSMessageSender.sendSMSMessage(getApplicationContext())
+
+        switchToggleSendSMSMessages.setOnCheckedChangeListener { buttonView, isChecked ->
+            run {
+                userDisabledSMSSending = !isChecked
+            }
+        }
     }
 
     override fun messageReceived(message: String) {
         Toast.makeText(this, "New Message Received: " + message, Toast.LENGTH_SHORT).show()
+        if (!userDisabledSMSSending) {
+            val sMSMessageSender = SMSMessageSender()
+            sMSMessageSender.sendSMSMessage(
+                getApplicationContext(),
+                editTextPhoneNumber.text.toString(),
+                "hi"
+            )
+        }
     }
 
     private fun requestReceiveSmsPermission() {
