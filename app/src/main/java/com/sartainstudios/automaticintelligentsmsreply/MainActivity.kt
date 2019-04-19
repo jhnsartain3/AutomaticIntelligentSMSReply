@@ -11,13 +11,12 @@ import android.view.MenuItem
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), MessageListener {
     companion object {
         private const val RECEIVE_SMS_PERMISSION_CODE = 0
         private const val READ_SMS_PERMISSION_CODE = 1
         private const val SEND_SMS_PERMISSION_CODE = 2
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,8 +24,15 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         requestReceiveSmsPermission()
-        requestReadSMSPermission()
-        requestSendSMSPermission()
+//        requestReadSMSPermission()
+//        requestSendSMSPermission()
+
+        //Register sms listener
+        MessageReceiver.bindListener(this);
+    }
+
+    override fun messageReceived(message: String) {
+        Toast.makeText(this, "New Message Received: " + message, Toast.LENGTH_SHORT).show();
     }
 
     private fun requestReceiveSmsPermission() {
@@ -39,7 +45,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun requestReadSMSPermission() {
+    // TODO determine if needed
+/*    private fun requestReadSMSPermission() {
         val permission = Manifest.permission.READ_SMS
         val grant = ContextCompat.checkSelfPermission(this, permission)
         if (grant != PackageManager.PERMISSION_GRANTED) {
@@ -57,7 +64,7 @@ class MainActivity : AppCompatActivity() {
             permission_list[0] = permission
             ActivityCompat.requestPermissions(this, permission_list, SEND_SMS_PERMISSION_CODE)
         }
-    }
+    }*/
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -73,23 +80,28 @@ class MainActivity : AppCompatActivity() {
                 return
             }
 
-            READ_SMS_PERMISSION_CODE -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "Results - Read" + grantResults[0]+ grantResults[1], Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(this, "Results - Read" + grantResults[0]+ grantResults[1], Toast.LENGTH_LONG).show();
-                }
-                return
-            }
+            // TODO determine if needed
+            /*  READ_SMS_PERMISSION_CODE -> {
+                      if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                          Toast.makeText(this, "Results - Read" + grantResults[0] + grantResults[1], Toast.LENGTH_LONG)
+                              .show();
+                      } else {
+                          Toast.makeText(this, "Results - Read" + grantResults[0] + grantResults[1], Toast.LENGTH_LONG)
+                              .show();
+                      }
+                      return
+                  }
 
-            SEND_SMS_PERMISSION_CODE -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "Results - Send" + grantResults[0]+ grantResults[2], Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(this, "Results - Send" + grantResults[0]+ grantResults[2], Toast.LENGTH_LONG).show();
-                }
-                return
-            }
+                  SEND_SMS_PERMISSION_CODE -> {
+                      if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                          Toast.makeText(this, "Results - Send" + grantResults[0] + grantResults[2], Toast.LENGTH_LONG)
+                              .show();
+                      } else {
+                          Toast.makeText(this, "Results - Send" + grantResults[0] + grantResults[2], Toast.LENGTH_LONG)
+                              .show();
+                      }
+                      return
+              }*/
         }
     }
 
