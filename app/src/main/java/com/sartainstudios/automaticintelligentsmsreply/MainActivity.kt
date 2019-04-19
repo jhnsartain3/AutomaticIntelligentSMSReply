@@ -48,20 +48,21 @@ class MainActivity : AppCompatActivity(), MessageListener {
         Log.i(TAG, "message: " + message)
 
         // Send SMS if user hasn't disabled it
-        if (!userDisabledSMSSending) {
-            Log.i(TAG, "userDisabledSMSSending: " + userDisabledSMSSending)
+        if (userDisabledSMSSending) 
+            return
+        
+        Log.i(TAG, "userDisabledSMSSending: " + userDisabledSMSSending)
 
-            val message = editTextSetCustomMessage.text.toString()
-            val phoneNumber = editTextPhoneNumber.text.toString()
+        val message = editTextSetCustomMessage.text.toString()
+        val phoneNumber = editTextPhoneNumber.text.toString()
 
-            Log.i(TAG, "message: " + message)
+        Log.i(TAG, "message: " + message)
 
-            textViewLastMessageSentDisplay.text = message
+        textViewLastMessageSentDisplay.text = message
 
-            val sMSMessageSender = SMSMessageSender()
-            sMSMessageSender.sendSMSMessage(phoneNumber, message)
-            Log.i(TAG, "sMSMessageSender: " + sMSMessageSender)
-        }
+        val sMSMessageSender = SMSMessageSender()
+        sMSMessageSender.sendSMSMessage(phoneNumber, message)
+        Log.i(TAG, "sMSMessageSender: " + sMSMessageSender)        
     }
 
     // Request receive SMS permission
@@ -74,15 +75,17 @@ class MainActivity : AppCompatActivity(), MessageListener {
         val grant1 = ContextCompat.checkSelfPermission(this, permission1)
         Log.i(TAG, permission1 + grant1)
 
-        if (grant != PackageManager.PERMISSION_GRANTED) {
-            Log.i(TAG, "!granted")
+        if (grant == PackageManager.PERMISSION_GRANTED) 
+            return
+        
+        Log.i(TAG, "!granted")
 
-            val permissionList = arrayOfNulls<String>(2)
-            permissionList[0] = Manifest.permission.RECEIVE_SMS
-            permissionList[1] = Manifest.permission.SEND_SMS
-            ActivityCompat.requestPermissions(this, permissionList, RECEIVE_SMS_PERMISSION_CODE)
-            Log.i(TAG, permissionList.toString())
-        }
+        val permissionList = arrayOfNulls<String>(2)
+        permissionList[0] = Manifest.permission.RECEIVE_SMS
+        permissionList[1] = Manifest.permission.SEND_SMS
+        ActivityCompat.requestPermissions(this, permissionList, RECEIVE_SMS_PERMISSION_CODE)
+        Log.i(TAG, permissionList.toString())
+        
     }
 
     override fun onRequestPermissionsResult(
