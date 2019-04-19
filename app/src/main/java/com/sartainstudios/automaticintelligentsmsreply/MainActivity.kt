@@ -25,14 +25,16 @@ class MainActivity : AppCompatActivity(), MessageListener {
 
         requestReceiveSmsPermission()
 //        requestReadSMSPermission()
-//        requestSendSMSPermission()
+        requestSendSMSPermission()
 
         //Register sms listener
-        MessageReceiver.bindListener(this);
+        MessageReceiver.bindListener(this)
+        val sMSMessageSender = SMSMessageSender()
+        sMSMessageSender.sendSMSMessage(getApplicationContext())
     }
 
     override fun messageReceived(message: String) {
-        Toast.makeText(this, "New Message Received: " + message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "New Message Received: " + message, Toast.LENGTH_SHORT).show()
     }
 
     private fun requestReceiveSmsPermission() {
@@ -54,7 +56,7 @@ class MainActivity : AppCompatActivity(), MessageListener {
             permission_list[0] = permission
             ActivityCompat.requestPermissions(this, permission_list, READ_SMS_PERMISSION_CODE)
         }
-    }
+    }*/
 
     private fun requestSendSMSPermission() {
         val permission = Manifest.permission.SEND_SMS
@@ -64,7 +66,7 @@ class MainActivity : AppCompatActivity(), MessageListener {
             permission_list[0] = permission
             ActivityCompat.requestPermissions(this, permission_list, SEND_SMS_PERMISSION_CODE)
         }
-    }*/
+    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
