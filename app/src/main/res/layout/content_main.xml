@@ -10,21 +10,95 @@
         tools:context=".MainActivity">
 
     <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="133dp"
             android:layout_height="wrap_content"
             android:inputType="phone"
+            android:textAlignment="center"
             android:ems="10"
-            android:id="@+id/editTextPhoneNumber" android:hint="5154416838" android:text="5154942276"
-            android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent" android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp"
+            android:id="@+id/editTextPhoneNumber"
+            android:hint="5154416838"
+            android:text="5154942276"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="8dp"
             app:layout_constraintStart_toStartOf="parent"/>
+
+    <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hello, this is an automated message"
+            android:ems="10"
+            android:id="@+id/editTextSetCustomMessage"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/editTextPhoneNumber"
+            android:layout_marginStart="8dp"
+            android:hint="Who is this?"
+            android:inputType="text"/>
+
+    <TextView
+            android:text="Last Message Received"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/editTextPhoneNumber"/>
+
+    <TextView
+            android:text=""
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:id="@+id/textViewLastMessageReceivedDisplay"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp"/>
+
+    <TextView
+            android:text="Last Message Sent"
+            android:layout_width="wrap_content"
+            android:id="@+id/textView3"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintHorizontal_bias="0.498"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/textViewLastMessageReceivedDisplay"/>
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textViewLastMessageSentDisplay"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/textView3"/>
+
     <Switch
             android:text="Send Messages"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/switchToggleSendSMSMessages" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/editTextPhoneNumber" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-            android:checked="true"/>
+            android:id="@+id/switchToggleSendSMSMessages"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp"
+            android:checked="true"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/textViewLastMessageReceivedDisplay"/>
+
 
 </android.support.constraint.ConstraintLayout>

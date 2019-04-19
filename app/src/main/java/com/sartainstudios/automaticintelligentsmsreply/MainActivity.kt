@@ -41,13 +41,15 @@ class MainActivity : AppCompatActivity(), MessageListener {
     }
 
     override fun messageReceived(message: String) {
-        Toast.makeText(this, "New Message Received: " + message, Toast.LENGTH_SHORT).show()
+        textViewLastMessageReceivedDisplay.text = message
         if (!userDisabledSMSSending) {
+            val message = editTextSetCustomMessage.text.toString()
+            textViewLastMessageSentDisplay.text = message
             val sMSMessageSender = SMSMessageSender()
             sMSMessageSender.sendSMSMessage(
                 getApplicationContext(),
                 editTextPhoneNumber.text.toString(),
-                "hi"
+                message
             )
         }
     }
