@@ -1,7 +1,7 @@
-# Here is the road map for where the project will be going
+# Automatic Intelligent SMS Reply - Android
 
-## Home Screen:
-![Future Home Screen](http://drive.google.com/uc?export=view&id=1gaWaKu92woRvoi5qfHQI0EUHz2Od_yyb)
+Allow your phone to do all the work of texting for you, while never having touch your phone
 
-## Automatic Send Screen:
-![Future Home Screen](http://drive.google.com/uc?export=view&id=18TeSjJZirUijNfjf_ZrUJryPMwvzhmoR)
+## Learn More
+
+Learn more at [SartainStudios.com](https://sartainstudios.com/EntityInformation?title=Automatic%20Intelligent%20SMS%20Reply)
